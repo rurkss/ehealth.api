@@ -3,7 +3,7 @@ defmodule EHealth.Mixfile do
 
   use Mix.Project
 
-  @version "7.27.2"
+  @version "7.29.1"
 
   def project do
     [
@@ -53,12 +53,13 @@ defmodule EHealth.Mixfile do
       {:plug, "~> 1.4"},
       {:cowboy, "~> 1.1"},
       {:httpoison, "~> 0.12"},
+      {:csv, "~> 2.0.0"},
       # fix for https://github.com/edgurgel/httpoison/issues/264
       {:hackney, "== 1.8.0", override: true},
       {:postgrex, ">= 0.0.0"},
       {:ecto, "~> 2.1"},
       {:scrivener_ecto, "~> 1.2"},
-      {:ecto_trail, "~> 0.2.3"},
+      {:ecto_trail, "0.2.3"},
       {:phoenix, "~> 1.3.0"},
       {:phoenix_ecto, "~> 3.2"},
       {:eview, "~> 0.12.2"},

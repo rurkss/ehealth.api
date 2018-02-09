@@ -358,7 +358,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
 
       id = resp["data"]["id"]
 
-      assert_declaration_request_show_response(resp)
+      assert_show_response_schema(resp, "declaration_request")
 
       assert to_string(Date.utc_today()) == resp["data"]["start_date"]
       assert {:ok, _} = Date.from_iso8601(resp["data"]["end_date"])
@@ -407,7 +407,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
 
       id = resp["data"]["id"]
 
-      assert_declaration_request_show_response(resp)
+      assert_show_response_schema(resp, "declaration_request")
 
       assert to_string(Date.utc_today()) == resp["data"]["start_date"]
       assert {:ok, _} = Date.from_iso8601(resp["data"]["end_date"])
@@ -466,7 +466,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
 
       id = resp["data"]["id"]
 
-      assert_declaration_request_show_response(resp)
+      assert_show_response_schema(resp, "declaration_request")
 
       assert to_string(Date.utc_today()) == resp["data"]["start_date"]
       assert {:ok, _} = Date.from_iso8601(resp["data"]["end_date"])
@@ -491,6 +491,43 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
 
       assert "CANCELLED" = EHealth.Repo.get(EHealth.DeclarationRequest, d1.id).status
       assert "CANCELLED" = EHealth.Repo.get(EHealth.DeclarationRequest, d2.id).status
+    end
+
+    test "Declaration request creating with employee that has wron speciality", %{conn: conn} do
+      legal_entity = insert(:prm, :legal_entity, id: "ec7b4900-d7bf-4794-98cd-0fd72f4321ec")
+      insert(:prm, :medical_service_provider, legal_entity: legal_entity)
+      party = insert(:prm, :party, id: "d9382ec3-4d88-4c9a-ac71-153db6f04f96")
+      insert(:prm, :party_user, party: party)
+      division = insert(:prm, :division, id: "31506899-55a5-4011-b88c-10ba90c5e9bd", legal_entity: legal_entity)
+
+      pharmacist2 = Map.put(doctor(), "specialities", [%{speciality: "PHARMACIST2"}])
+
+      insert(
+        :prm,
+        :employee,
+        id: "b03f057f-aa84-4152-b6e5-3905ba821b66",
+        division: division,
+        party: party,
+        legal_entity: legal_entity,
+        additional_info: pharmacist2
+      )
+
+      declaration_request_params =
+        "test/data/declaration_request.json"
+        |> File.read!()
+        |> Poison.decode!()
+        |> put_in(["declaration_request", "division_id"], "31506899-55a5-4011-b88c-10ba90c5e9bd")
+        |> put_in(["declaration_request", "employee_id"], "b03f057f-aa84-4152-b6e5-3905ba821b66")
+
+      conn =
+        conn
+        |> put_req_header("x-consumer-id", "b03f057f-aa84-4152-b6e5-3905ba821b66")
+        |> put_req_header("x-consumer-metadata", Poison.encode!(%{client_id: "ec7b4900-d7bf-4794-98cd-0fd72f4321ec"}))
+        |> post(declaration_request_path(conn, :create), declaration_request_params)
+
+      resp = json_response(conn, 422)
+      error_message = resp["error"]["message"]
+      assert String.starts_with?(error_message, "Employee's speciality does not belong to a doctor")
     end
   end
 
@@ -710,14 +747,5 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
     insert(:il, :dictionary_document_type)
     insert(:il, :dictionary_authentication_method)
     insert(:il, :dictionary_document_relationship_type)
-  end
-
-  defp assert_declaration_request_show_response(response) do
-    schema =
-      "specs/json_schemas/declaration_request/declaration_request_show_response.json"
-      |> File.read!()
-      |> Poison.decode!()
-
-    assert :ok == NExJsonSchema.Validator.validate(schema, response)
   end
 end

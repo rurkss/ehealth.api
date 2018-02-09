@@ -1,12 +1,31 @@
-Change log for versions 7.27.0 - 7.27.2
+Change log for versions 7.27.0 - 7.27.14
 
 **Patches and bug fixes**:
 
+add employee_id to employee_request events (#1806)
+Fix show in employee_request_view (1779)
+EHealth-1780: fix error message (#1803)
+EHealth-1780: fix error message
+EHealth-1780: fix format
+Add context to employee_request details (#1801)
+EHealth-1781: fix search LE by settlement_id (#1802)
+increase delete declaration_requests timeout
+Fix employee speciality validation when creating declaration request (1776)
+add working hours to division (#1770)
+EHealth-1739: put reason field
+EHealth-1739: added reason_description
 add router logger (#1769)
 Fix person_name pattern (#1768)
 
 **Other**:
 
+Add employee_id to event manager
+Change Search Settlements, Search Regions and Search Districts
+registers_json_schema
+add json schema to create registers
+add missed additional properties to json schema for creating registers
+EHealth-1729: added reason_description (#1777)
+Transferring API Description file from Apiary.io
 Rollback corrections
 brand names replaced
 oauth fine tuning
