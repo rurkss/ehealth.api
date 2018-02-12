@@ -448,7 +448,7 @@ defmodule EHealth.Web.MedicationRequestRequestControllerTest do
 
       signed_mrr =
         mrr
-        |> Poison.encode!()
+        |> Jaison.encode!()
         |> Base.encode64()
 
       drfo =
@@ -525,7 +525,7 @@ defmodule EHealth.Web.MedicationRequestRequestControllerTest do
       signed_mrr =
         mrr
         |> put_in(["employee", "id"], Ecto.UUID.generate())
-        |> Poison.encode!()
+        |> Jaison.encode!()
         |> Base.encode64()
 
       conn1 =
@@ -558,6 +558,6 @@ defmodule EHealth.Web.MedicationRequestRequestControllerTest do
   defp test_request do
     "test/data/medication_request_request/medication_request_request.json"
     |> File.read!()
-    |> Poison.decode!()
+    |> Jaison.decode!()
   end
 end

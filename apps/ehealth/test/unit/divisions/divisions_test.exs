@@ -16,7 +16,7 @@ defmodule EHealth.Unit.DivisionsTest do
       division =
         "test/data/division.json"
         |> File.read!()
-        |> Poison.decode!()
+        |> Jaison.decode!()
 
       {:ok, division: division}
     end

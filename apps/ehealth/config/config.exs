@@ -8,8 +8,9 @@ config :ehealth,
   run_declaration_request_terminator: true,
   system_user: {:system, "EHEALTH_SYSTEM_USER", "4261eacf-8008-4e62-899f-de1e2f7065f0"}
 
-# Config Phoenix to use Jason as default Json encoder
+# Config Jason as default Json encoder for Phoenix and Ecto
 config :phoenix, :format_encoders, json: Jason
+config :ecto, json_library: Jason
 
 # Configures the endpoint
 config :ehealth, EHealth.Web.Endpoint,

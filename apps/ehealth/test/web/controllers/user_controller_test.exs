@@ -36,7 +36,7 @@ defmodule EHealth.Web.UserControllerTest do
           %{"data" => []}
         end
 
-      Plug.Conn.send_resp(conn, 200, Poison.encode!(resp))
+      Plug.Conn.send_resp(conn, 200, Jaison.encode!(resp))
     end
 
     Plug.Router.put "/admin/users/1380df72-275a-11e7-93ae-92361f002671" do
@@ -46,7 +46,7 @@ defmodule EHealth.Web.UserControllerTest do
 
       resp = %{data: Map.merge(@user_attrs, conn.body_params)}
 
-      Plug.Conn.send_resp(conn, 200, Poison.encode!(resp))
+      Plug.Conn.send_resp(conn, 200, Jaison.encode!(resp))
     end
 
     Plug.Router.post "/templates/5/actions/render" do

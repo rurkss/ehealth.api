@@ -25,10 +25,10 @@ defmodule EHealth.Unit.DeclarationRequest.API.DocumentsTest do
               secret_url: "http://a.link.for/#{resource_id}/#{resource_name}"
             }
 
-            Plug.Conn.send_resp(conn, 200, Poison.encode!(%{data: upload}))
+            Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{data: upload}))
 
           "98e0a42f-0000-9999-5555-0ea99426a3fb" ->
-            Plug.Conn.send_resp(conn, 500, Poison.encode!(%{something: "went wrong with #{resource_name}"}))
+            Plug.Conn.send_resp(conn, 500, Jaison.encode!(%{something: "went wrong with #{resource_name}"}))
         end
       end
     end

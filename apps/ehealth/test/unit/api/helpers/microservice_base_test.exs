@@ -34,7 +34,7 @@ defmodule EHealth.Unit.API.Helpers.MicroserviceBaseTest do
 
   test "log/5" do
     fun = fn ->
-      post!("/test", Poison.encode!(%{a: 1, b: 2}), some_header: "x")
+      post!("/test", Jaison.encode!(%{a: 1, b: 2}), some_header: "x")
     end
 
     message =

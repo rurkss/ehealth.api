@@ -76,11 +76,11 @@ defmodule EHealth.Web.RegisterControllerTest do
               {200, []}
           end
 
-        send_resp(conn, code, Poison.encode!(%{meta: %{code: code}, data: data}))
+        send_resp(conn, code, Jaison.encode!(%{meta: %{code: code}, data: data}))
       end
 
       Plug.Router.patch "/persons/:id/declarations/actions/terminate" do
-        send_resp(conn, 200, Poison.encode!(%{meta: %{code: 200}, data: %{}}))
+        send_resp(conn, 200, Jaison.encode!(%{meta: %{code: 200}, data: %{}}))
       end
     end
 
@@ -163,13 +163,13 @@ defmodule EHealth.Web.RegisterControllerTest do
       use MicroservicesHelper
 
       Plug.Router.get "/persons_internal" do
-        send_resp(conn, 200, Poison.encode!(%{meta: %{code: 200}, data: [%{id: Ecto.UUID.generate()}]}))
+        send_resp(conn, 200, Jaison.encode!(%{meta: %{code: 200}, data: [%{id: Ecto.UUID.generate()}]}))
       end
 
       Plug.Router.patch "/persons/:id/declarations/actions/terminate" do
         case is_binary(conn.body_params["reason_description"]) do
-          true -> send_resp(conn, 200, Poison.encode!(%{meta: %{code: 200}, data: %{}}))
-          _ -> send_resp(conn, 404, Poison.encode!(%{meta: %{code: 404}, data: %{}}))
+          true -> send_resp(conn, 200, Jaison.encode!(%{meta: %{code: 200}, data: %{}}))
+          _ -> send_resp(conn, 404, Jaison.encode!(%{meta: %{code: 404}, data: %{}}))
         end
       end
     end

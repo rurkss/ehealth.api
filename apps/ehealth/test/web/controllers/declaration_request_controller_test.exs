@@ -169,7 +169,7 @@ defmodule EHealth.Web.DeclarationRequestControllerTest do
           }
         }
 
-        Plug.Conn.send_resp(conn, 200, Poison.encode!(resp))
+        Plug.Conn.send_resp(conn, 200, Jaison.encode!(resp))
       end
     end
 
@@ -226,7 +226,7 @@ defmodule EHealth.Web.DeclarationRequestControllerTest do
           }
         }
 
-        Plug.Conn.send_resp(conn, 200, Poison.encode!(resp))
+        Plug.Conn.send_resp(conn, 200, Jaison.encode!(resp))
       end
     end
 
@@ -281,7 +281,7 @@ defmodule EHealth.Web.DeclarationRequestControllerTest do
           "inserted_at" => "some_time"
         }
 
-        Plug.Conn.send_resp(conn, 200, Poison.encode!(%{data: block}))
+        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{data: block}))
       end
     end
 
@@ -329,7 +329,7 @@ defmodule EHealth.Web.DeclarationRequestControllerTest do
       use MicroservicesHelper
 
       Plug.Router.post "/verifications" do
-        send_resp(conn, 200, Poison.encode!(%{status: "NEW"}))
+        send_resp(conn, 200, Jaison.encode!(%{status: "NEW"}))
       end
     end
 
@@ -427,7 +427,7 @@ defmodule EHealth.Web.DeclarationRequestControllerTest do
           }
         }
 
-        Plug.Conn.send_resp(conn, 200, Poison.encode!(data))
+        Plug.Conn.send_resp(conn, 200, Jaison.encode!(data))
       end
     end
 
@@ -481,7 +481,7 @@ defmodule EHealth.Web.DeclarationRequestControllerTest do
       data =
         "test/data/declaration_request/sign_request.json"
         |> File.read!()
-        |> Poison.decode!()
+        |> Jaison.decode!()
 
       tax_id = get_in(data, ~w(employee party tax_id))
       employee_id = get_in(data, ~w(employee id))
@@ -513,7 +513,7 @@ defmodule EHealth.Web.DeclarationRequestControllerTest do
       signed_declaration_request =
         data
         |> Map.put("seed", "some_current_hash")
-        |> Poison.encode!()
+        |> Jaison.encode!()
         |> Base.encode64()
 
       conn
@@ -531,7 +531,7 @@ defmodule EHealth.Web.DeclarationRequestControllerTest do
       data =
         "test/data/declaration_request/sign_request.json"
         |> File.read!()
-        |> Poison.decode!()
+        |> Jaison.decode!()
 
       %{id: legal_entity_id} = insert(:prm, :legal_entity)
       %{id: declaration_id} = insert(:il, :declaration_request)

@@ -45,7 +45,7 @@ defmodule EHealth.ReleaseTasks do
     :ehealth
     |> Application.app_dir("priv/repo/fixtures/dictionaries.json")
     |> File.read!()
-    |> Poison.decode!(as: [%Dictionary{}])
+    |> Jaison.decode!(as: [%Dictionary{}])
     |> Enum.each(&repo.insert!/1)
 
     System.halt(0)

@@ -23,7 +23,7 @@ defmodule EHealth.Integration.DeclarationRequestCreateTest do
               []
           end
 
-        send_resp(conn, 200, Poison.encode!(%{data: search_result}))
+        send_resp(conn, 200, Jaison.encode!(%{data: search_result}))
       end
 
       # MPI API
@@ -34,7 +34,7 @@ defmodule EHealth.Integration.DeclarationRequestCreateTest do
           ]
         }
 
-        send_resp(conn, 200, Poison.encode!(%{data: person}))
+        send_resp(conn, 200, Jaison.encode!(%{data: person}))
       end
 
       # MAN Templates API
@@ -53,7 +53,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
           secret_url: "http://some_resource.com/#{params["resource_id"]}/#{params["resource_name"]}"
         }
 
-        Plug.Conn.send_resp(conn, 200, Poison.encode!(%{data: upload}))
+        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{data: upload}))
       end
 
       # UAddresses API
@@ -64,7 +64,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
           name: "Київ"
         }
 
-        Plug.Conn.send_resp(conn, 200, Poison.encode!(%{meta: "", data: settlement}))
+        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{meta: "", data: settlement}))
       end
 
       # UAddresses API
@@ -73,26 +73,26 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
           name: "М.КИЇВ"
         }
 
-        Plug.Conn.send_resp(conn, 200, Poison.encode!(%{meta: "", data: region}))
+        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{meta: "", data: region}))
       end
 
       # OTP Verifications
       Plug.Router.get "/verifications/+380508887700" do
-        send_resp(conn, 200, Poison.encode!(%{data: ["response_we_don't_care_about"]}))
+        send_resp(conn, 200, Jaison.encode!(%{data: ["response_we_don't_care_about"]}))
       end
 
       Plug.Router.post "/verifications" do
         "+380508887700" = conn.body_params["phone_number"]
 
-        send_resp(conn, 200, Poison.encode!(%{data: ["response_we_don't_care_about"]}))
+        send_resp(conn, 200, Jaison.encode!(%{data: ["response_we_don't_care_about"]}))
       end
 
       Plug.Router.post "/api/v1/tables/some_gndf_table_id/decisions" do
-        Plug.Conn.send_resp(conn, 200, Poison.encode!(%{data: %{final_decision: "OFFLINE"}}))
+        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{data: %{final_decision: "OFFLINE"}}))
       end
 
       Plug.Router.post "/api/v1/tables/not_available/decisions" do
-        Plug.Conn.send_resp(conn, 200, Poison.encode!(%{data: %{final_decision: "NA"}}))
+        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{data: %{final_decision: "NA"}}))
       end
 
       # Mithril API
@@ -103,7 +103,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
           }
         ]
 
-        Plug.Conn.send_resp(conn, 200, Poison.encode!(%{data: roles}))
+        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{data: roles}))
       end
 
       Plug.Router.get "/admin/users/:id/roles" do
@@ -114,7 +114,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
           }
         ]
 
-        Plug.Conn.send_resp(conn, 200, Poison.encode!(%{data: roles}))
+        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{data: roles}))
       end
 
       Plug.Router.get "/admin/users/:id" do
@@ -122,7 +122,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
           "email" => "user@email.com"
         }
 
-        Plug.Conn.send_resp(conn, 200, Poison.encode!(%{data: user}))
+        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{data: user}))
       end
 
       # OPS API
@@ -134,7 +134,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
           "inserted_at" => "some_time"
         }
 
-        Plug.Conn.send_resp(conn, 200, Poison.encode!(%{data: block}))
+        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{data: block}))
       end
 
       match _ do
@@ -144,7 +144,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
         require Logger
         Logger.error(message)
 
-        send_resp(conn, 404, Poison.encode!(%{}))
+        send_resp(conn, 404, Jaison.encode!(%{}))
       end
     end
 
@@ -203,13 +203,13 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
       declaration_request_params =
         "test/data/declaration_request.json"
         |> File.read!()
-        |> Poison.decode!()
+        |> Jaison.decode!()
         |> put_in(~W(declaration_request person birth_date), "1989-08-19")
 
       conn =
         conn
         |> put_req_header("x-consumer-id", "ce377dea-d8c4-4dd8-9328-de24b1ee3879")
-        |> put_req_header("x-consumer-metadata", Poison.encode!(%{client_id: "8799e3b6-34e7-4798-ba70-d897235d2b6d"}))
+        |> put_req_header("x-consumer-metadata", Jaison.encode!(%{client_id: "8799e3b6-34e7-4798-ba70-d897235d2b6d"}))
         |> post(declaration_request_path(conn, :create), declaration_request_params)
 
       resp = json_response(conn, 422)
@@ -225,13 +225,13 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
       declaration_request_params =
         "test/data/declaration_request.json"
         |> File.read!()
-        |> Poison.decode!()
+        |> Jaison.decode!()
         |> put_in(~W(declaration_request person authentication_methods), auth_methods)
 
       conn =
         conn
         |> put_req_header("x-consumer-id", "ce377dea-d8c4-4dd8-9328-de24b1ee3879")
-        |> put_req_header("x-consumer-metadata", Poison.encode!(%{client_id: "8799e3b6-34e7-4798-ba70-d897235d2b6d"}))
+        |> put_req_header("x-consumer-metadata", Jaison.encode!(%{client_id: "8799e3b6-34e7-4798-ba70-d897235d2b6d"}))
         |> post(declaration_request_path(conn, :create), declaration_request_params)
 
       resp = json_response(conn, 422)
@@ -243,7 +243,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
       declaration_request_params =
         "test/data/declaration_request.json"
         |> File.read!()
-        |> Poison.decode!()
+        |> Jaison.decode!()
 
       declaration_request_params =
         put_in(
@@ -255,7 +255,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
       conn =
         conn
         |> put_req_header("x-consumer-id", "ce377dea-d8c4-4dd8-9328-de24b1ee3879")
-        |> put_req_header("x-consumer-metadata", Poison.encode!(%{client_id: "8799e3b6-34e7-4798-ba70-d897235d2b6d"}))
+        |> put_req_header("x-consumer-metadata", Jaison.encode!(%{client_id: "8799e3b6-34e7-4798-ba70-d897235d2b6d"}))
         |> post(declaration_request_path(conn, :create), declaration_request_params)
 
       json_response(conn, 200)
@@ -265,13 +265,13 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
       declaration_request_params =
         "test/data/declaration_request.json"
         |> File.read!()
-        |> Poison.decode!()
+        |> Jaison.decode!()
         |> put_in(~W(declaration_request person authentication_methods), [%{"type" => "OTP"}])
 
       conn =
         conn
         |> put_req_header("x-consumer-id", "ce377dea-d8c4-4dd8-9328-de24b1ee3879")
-        |> put_req_header("x-consumer-metadata", Poison.encode!(%{client_id: "8799e3b6-34e7-4798-ba70-d897235d2b6d"}))
+        |> put_req_header("x-consumer-metadata", Jaison.encode!(%{client_id: "8799e3b6-34e7-4798-ba70-d897235d2b6d"}))
         |> post(declaration_request_path(conn, :create), declaration_request_params)
 
       resp = json_response(conn, 422)
@@ -287,13 +287,13 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
       declaration_request_params =
         "test/data/declaration_request.json"
         |> File.read!()
-        |> Poison.decode!()
+        |> Jaison.decode!()
         |> put_in(~W(declaration_request person phones), phones)
 
       conn =
         conn
         |> put_req_header("x-consumer-id", "ce377dea-d8c4-4dd8-9328-de24b1ee3879")
-        |> put_req_header("x-consumer-metadata", Poison.encode!(%{client_id: "8799e3b6-34e7-4798-ba70-d897235d2b6d"}))
+        |> put_req_header("x-consumer-metadata", Jaison.encode!(%{client_id: "8799e3b6-34e7-4798-ba70-d897235d2b6d"}))
         |> post(declaration_request_path(conn, :create), declaration_request_params)
 
       resp = json_response(conn, 422)
@@ -307,7 +307,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
       params =
         "test/data/declaration_request.json"
         |> File.read!()
-        |> Poison.decode!()
+        |> Jaison.decode!()
 
       tax_id = get_in(params["declaration_request"], ["person", "tax_id"])
       employee_id = "ce377dea-d8c4-4dd8-9328-de24b1ee3879"
@@ -394,15 +394,15 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
       declaration_request_params =
         "test/data/declaration_request.json"
         |> File.read!()
-        |> Poison.decode!()
+        |> Jaison.decode!()
         |> put_in(~W(declaration_request person first_name), "Тест")
         |> put_in(~W(declaration_request person authentication_methods), [%{"type" => "OFFLINE"}])
 
       resp =
         conn
         |> put_req_header("x-consumer-id", "ce377dea-d8c4-4dd8-9328-de24b1ee3879")
-        |> put_req_header("x-consumer-metadata", Poison.encode!(%{client_id: "8799e3b6-34e7-4798-ba70-d897235d2b6d"}))
-        |> post(declaration_request_path(conn, :create), Poison.encode!(declaration_request_params))
+        |> put_req_header("x-consumer-metadata", Jaison.encode!(%{client_id: "8799e3b6-34e7-4798-ba70-d897235d2b6d"}))
+        |> post(declaration_request_path(conn, :create), Jaison.encode!(declaration_request_params))
         |> json_response(200)
 
       id = resp["data"]["id"]
@@ -449,7 +449,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
       declaration_request_params =
         "test/data/declaration_request.json"
         |> File.read!()
-        |> Poison.decode!()
+        |> Jaison.decode!()
         |> put_in(["declaration_request", "person", "first_name"], "Тест")
 
       decoded = declaration_request_params["declaration_request"]
@@ -459,8 +459,8 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
       conn =
         conn
         |> put_req_header("x-consumer-id", "ce377dea-d8c4-4dd8-9328-de24b1ee3879")
-        |> put_req_header("x-consumer-metadata", Poison.encode!(%{client_id: "8799e3b6-34e7-4798-ba70-d897235d2b6d"}))
-        |> post("/api/declaration_requests", Poison.encode!(declaration_request_params))
+        |> put_req_header("x-consumer-metadata", Jaison.encode!(%{client_id: "8799e3b6-34e7-4798-ba70-d897235d2b6d"}))
+        |> post("/api/declaration_requests", Jaison.encode!(declaration_request_params))
 
       resp = json_response(conn, 200)
 
@@ -515,14 +515,14 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
       declaration_request_params =
         "test/data/declaration_request.json"
         |> File.read!()
-        |> Poison.decode!()
+        |> Jaison.decode!()
         |> put_in(["declaration_request", "division_id"], "31506899-55a5-4011-b88c-10ba90c5e9bd")
         |> put_in(["declaration_request", "employee_id"], "b03f057f-aa84-4152-b6e5-3905ba821b66")
 
       conn =
         conn
         |> put_req_header("x-consumer-id", "b03f057f-aa84-4152-b6e5-3905ba821b66")
-        |> put_req_header("x-consumer-metadata", Poison.encode!(%{client_id: "ec7b4900-d7bf-4794-98cd-0fd72f4321ec"}))
+        |> put_req_header("x-consumer-metadata", Jaison.encode!(%{client_id: "ec7b4900-d7bf-4794-98cd-0fd72f4321ec"}))
         |> post(declaration_request_path(conn, :create), declaration_request_params)
 
       resp = json_response(conn, 422)
@@ -542,7 +542,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
           name: "Київ"
         }
 
-        Plug.Conn.send_resp(conn, 200, Poison.encode!(%{meta: "", data: settlement}))
+        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{meta: "", data: settlement}))
       end
 
       Plug.Router.get "/regions/555dfcd7-2be5-4417-aaaf-ca95564f7977" do
@@ -550,7 +550,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
           name: "М.КИЇВ"
         }
 
-        Plug.Conn.send_resp(conn, 200, Poison.encode!(%{meta: "", data: region}))
+        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{meta: "", data: region}))
       end
     end
 
@@ -575,7 +575,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
       conn =
         conn
         |> put_req_header("x-consumer-id", "ce377dea-d8c4-4dd8-9328-de24b1ee3879")
-        |> put_req_header("x-consumer-metadata", Poison.encode!(%{client_id: ""}))
+        |> put_req_header("x-consumer-metadata", Jaison.encode!(%{client_id: ""}))
         |> post(declaration_request_path(conn, :create), declaration_request_params)
 
       json_response(conn, 422)
@@ -593,7 +593,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
           name: "Київ"
         }
 
-        Plug.Conn.send_resp(conn, 200, Poison.encode!(%{meta: "", data: settlement}))
+        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{meta: "", data: settlement}))
       end
 
       Plug.Router.get "/regions/555dfcd7-2be5-4417-aaaf-ca95564f7977" do
@@ -601,7 +601,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
           name: "М.КИЇВ"
         }
 
-        Plug.Conn.send_resp(conn, 200, Poison.encode!(%{meta: "", data: region}))
+        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{meta: "", data: region}))
       end
     end
 
@@ -630,14 +630,14 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
       declaration_request_params =
         "test/data/declaration_request.json"
         |> File.read!()
-        |> Poison.decode!()
+        |> Jaison.decode!()
         |> put_in(["declaration_request", "employee_id"], wrong_id)
 
       conn =
         conn
         |> put_req_header("x-consumer-id", "ce377dea-d8c4-4dd8-9328-de24b1ee3879")
-        |> put_req_header("x-consumer-metadata", Poison.encode!(%{client_id: ""}))
-        |> post(declaration_request_path(conn, :create), Poison.encode!(declaration_request_params))
+        |> put_req_header("x-consumer-metadata", Jaison.encode!(%{client_id: ""}))
+        |> post(declaration_request_path(conn, :create), Jaison.encode!(declaration_request_params))
 
       resp = json_response(conn, 422)
 
@@ -657,7 +657,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
       use MicroservicesHelper
 
       Plug.Router.get "/settlements/adaa4abf-f530-461c-bcbf-a0ac210d955b" do
-        Plug.Conn.send_resp(conn, 404, Poison.encode!(%{meta: "", data: %{}}))
+        Plug.Conn.send_resp(conn, 404, Jaison.encode!(%{meta: "", data: %{}}))
       end
     end
 
@@ -682,7 +682,7 @@ request. tax_id = #{conn.body_params["person"]["tax_id"]}</body></html>"
       conn =
         conn
         |> put_req_header("x-consumer-id", "ce377dea-d8c4-4dd8-9328-de24b1ee3879")
-        |> put_req_header("x-consumer-metadata", Poison.encode!(%{client_id: ""}))
+        |> put_req_header("x-consumer-metadata", Jaison.encode!(%{client_id: ""}))
         |> post(declaration_request_path(conn, :create), declaration_request_params)
 
       assert %{
