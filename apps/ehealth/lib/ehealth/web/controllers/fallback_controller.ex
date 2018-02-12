@@ -127,7 +127,7 @@ defmodule EHealth.Web.FallbackController do
 
   def call(conn, {:error, {:response_json_decoder, reason}}) do
     Logger.error(fn ->
-      Poison.encode!(%{
+      Jason.encode!(%{
         "log_type" => "error",
         "message" => "Cannot decode HTTP JSON response: #{inspect(reason)}",
         "request_id" => Logger.metadata()[:request_id]
@@ -141,7 +141,7 @@ defmodule EHealth.Web.FallbackController do
 
   def call(conn, params) do
     Logger.error(fn ->
-      Poison.encode!(%{
+      Jason.encode!(%{
         "log_type" => "error",
         "message" => "No function clause matching in EHealth.Web.FallbackController.call/2: #{inspect(params)}",
         "request_id" => Logger.metadata()[:request_id]

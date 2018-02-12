@@ -49,7 +49,7 @@ defmodule EHealth.Mixfile do
     [
       {:confex, "~> 3.2"},
       {:timex, ">= 3.1.15"},
-      {:poison, "~> 3.1"},
+      {:jason, "~> 1.0"},
       {:plug, "~> 1.4"},
       {:cowboy, "~> 1.1"},
       {:httpoison, "~> 0.12"},

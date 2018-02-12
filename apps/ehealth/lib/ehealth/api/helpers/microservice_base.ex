@@ -19,7 +19,7 @@ defmodule EHealth.API.Helpers.MicroserviceBase do
         query_string = if Enum.empty?(params), do: "", else: "?#{URI.encode_query(params)}"
 
         Logger.info(fn ->
-          Poison.encode!(%{
+          Jason.encode!(%{
             "log_type" => "microservice_request",
             "microservice" => config()[:endpoint],
             "action" => method,

@@ -32,7 +32,7 @@ defmodule EHealth.API.MPI do
   end
 
   def update_person(id, params, headers) do
-    patch!("/persons/#{id}", Poison.encode!(params), headers)
+    patch!("/persons/#{id}", Jason.encode!(params), headers)
   end
 
   def reset_person_auth_method(id, headers) do
@@ -40,7 +40,7 @@ defmodule EHealth.API.MPI do
   end
 
   def create_or_update_person(params, headers) do
-    post!("/persons", Poison.encode!(params), headers)
+    post!("/persons", Jason.encode!(params), headers)
   end
 
   def get_merge_candidates(params \\ %{}, headers \\ []) do
@@ -48,6 +48,6 @@ defmodule EHealth.API.MPI do
   end
 
   def update_merge_candidate(merge_candidate_id, params, headers \\ []) do
-    patch!("/merge_candidates/#{merge_candidate_id}", Poison.encode!(%{merge_candidate: params}), headers)
+    patch!("/merge_candidates/#{merge_candidate_id}", Jason.encode!(%{merge_candidate: params}), headers)
   end
 end

@@ -58,7 +58,7 @@ defmodule EHealth.DeclarationRequest.API.Approve do
       MediaStorage.create_signed_url("HEAD", bucket, resource_name, id)
 
     Logger.info(fn ->
-      Poison.encode!(%{
+      Jason.encode!(%{
         "log_type" => "microservice_response",
         "microservice" => "ael",
         "result" => result,
@@ -78,7 +78,7 @@ defmodule EHealth.DeclarationRequest.API.Approve do
 
       {:error, reason} ->
         Logger.info(fn ->
-          Poison.encode!(%{
+          Jason.encode!(%{
             "log_type" => "microservice_response",
             "microservice" => "ael",
             "result" => reason,

@@ -33,7 +33,7 @@ defmodule EHealth.API.MediaStorage do
 
   def create_signed_url(data, headers) do
     Logger.info(fn ->
-      Poison.encode!(%{
+      Jason.encode!(%{
         "log_type" => "microservice_request",
         "microservice" => config()[:endpoint],
         "action" => "POST",
@@ -44,7 +44,7 @@ defmodule EHealth.API.MediaStorage do
       })
     end)
 
-    post!("/media_content_storage_secrets", Poison.encode!(data), headers)
+    post!("/media_content_storage_secrets", Jason.encode!(data), headers)
   end
 
   def store_signed_content(signed_content, bucket, id, headers) do
@@ -73,7 +73,7 @@ defmodule EHealth.API.MediaStorage do
 
   def put_signed_content(err, _signed_content) do
     Logger.error(fn ->
-      Poison.encode!(%{
+      Jason.encode!(%{
         "log_type" => "microservice_response",
         "microservice" => config()[:endpoint],
         "response" => err,

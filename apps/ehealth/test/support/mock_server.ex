@@ -27,7 +27,7 @@ defmodule EHealth.MockServer do
     Plug.Parsers,
     parsers: [:json],
     pass: ["application/json"],
-    json_decoder: Poison
+    json_decoder: Jason
   )
 
   plug(:dispatch)
@@ -48,7 +48,7 @@ defmodule EHealth.MockServer do
   # Mithril
 
   get "/admin/clients" do
-    Plug.Conn.send_resp(conn, 200, [get_oauth_client()] |> wrap_response_with_paging() |> Poison.encode!())
+    Plug.Conn.send_resp(conn, 200, [get_oauth_client()] |> wrap_response_with_paging() |> Jason.encode!())
   end
 
   patch "/admin/clients/:client_id/refresh_secret" do
@@ -58,7 +58,7 @@ defmodule EHealth.MockServer do
       id
       |> get_oauth_client()
       |> wrap_response(200)
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     Plug.Conn.send_resp(conn, 200, response)
   end
@@ -68,7 +68,7 @@ defmodule EHealth.MockServer do
       conn.query_params
       |> get_oauth_users()
       |> wrap_response_with_paging()
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     Plug.Conn.send_resp(conn, 200, resp)
   end
@@ -108,7 +108,7 @@ defmodule EHealth.MockServer do
       id
       |> get_oauth_user()
       |> wrap_response()
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     Plug.Conn.send_resp(conn, 200, resp)
   end
@@ -118,7 +118,7 @@ defmodule EHealth.MockServer do
       get_oauth_user()
       |> MapDeepMerge.merge(conn.body_params["user"])
       |> wrap_response(201)
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     Plug.Conn.send_resp(conn, 201, resp)
   end
@@ -129,7 +129,7 @@ defmodule EHealth.MockServer do
       |> get_oauth_client()
       |> MapDeepMerge.merge(conn.body_params["client"])
       |> wrap_response()
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     Plug.Conn.send_resp(conn, 200, resp)
   end
@@ -139,7 +139,7 @@ defmodule EHealth.MockServer do
       conn.path_params["id"]
       |> get_oauth_client()
       |> wrap_response()
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     Plug.Conn.send_resp(conn, 200, resp)
   end
@@ -168,7 +168,7 @@ defmodule EHealth.MockServer do
     resp =
       [get_oauth_role()]
       |> wrap_response_with_paging()
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     Plug.Conn.send_resp(conn, 200, resp)
   end
@@ -183,7 +183,7 @@ defmodule EHealth.MockServer do
     resp =
       roles
       |> wrap_response()
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     Plug.Conn.send_resp(conn, 200, resp)
   end
@@ -198,7 +198,7 @@ defmodule EHealth.MockServer do
     resp =
       roles
       |> wrap_response()
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     Plug.Conn.send_resp(conn, 200, resp)
   end
@@ -208,7 +208,7 @@ defmodule EHealth.MockServer do
       conn.path_params["id"]
       |> get_oauth_user_role()
       |> wrap_response()
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     Plug.Conn.send_resp(conn, 200, resp)
   end
@@ -219,7 +219,7 @@ defmodule EHealth.MockServer do
     resp =
       [client_type]
       |> wrap_response()
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     Plug.Conn.send_resp(conn, 200, resp)
   end
@@ -247,7 +247,7 @@ defmodule EHealth.MockServer do
       "1"
       |> get_settlement()
       |> wrap_response()
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     Plug.Conn.send_resp(conn, 200, resp)
   end
@@ -263,7 +263,7 @@ defmodule EHealth.MockServer do
     resp =
       get_region()
       |> wrap_response()
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     Plug.Conn.send_resp(conn, 200, resp)
   end
@@ -272,7 +272,7 @@ defmodule EHealth.MockServer do
     resp =
       get_district()
       |> wrap_response()
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     Plug.Conn.send_resp(conn, 200, resp)
   end
@@ -289,7 +289,7 @@ defmodule EHealth.MockServer do
       params
       |> search_for_number
       |> wrap_response
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     Plug.Conn.send_resp(conn, 200, response)
   end
@@ -298,7 +298,7 @@ defmodule EHealth.MockServer do
     resp =
       conn.body_params
       |> wrap_response
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     Plug.Conn.send_resp(conn, 200, resp)
   end
@@ -316,12 +316,12 @@ defmodule EHealth.MockServer do
         data =
           %{"is_valid" => false}
           |> wrap_response(422)
-          |> Poison.encode!()
+          |> Jason.encode!()
 
         Plug.Conn.send_resp(conn, 422, data)
 
       {:ok, data} ->
-        content = Poison.decode!(data)
+        content = Jason.decode!(data)
 
         data =
           %{
@@ -330,7 +330,7 @@ defmodule EHealth.MockServer do
             "signer" => Map.get(content, "signer")
           }
           |> wrap_response()
-          |> Poison.encode!()
+          |> Jason.encode!()
 
         Plug.Conn.send_resp(conn, 200, data)
     end
@@ -527,7 +527,7 @@ defmodule EHealth.MockServer do
       |> Map.put("details", details)
       |> Map.delete("dispense_details")
       |> wrap_response()
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     Plug.Conn.send_resp(conn, 201, resp)
   end
@@ -871,7 +871,7 @@ defmodule EHealth.MockServer do
       200,
       resource
       |> wrap_response_with_paging(paging)
-      |> Poison.encode!()
+      |> Jason.encode!()
     )
   end
 
@@ -885,7 +885,7 @@ defmodule EHealth.MockServer do
     render_404(conn)
   end
 
-  def get_resp_body(resource, conn), do: resource |> EView.wrap_body(conn) |> Poison.encode!()
+  def get_resp_body(resource, conn), do: resource |> EView.wrap_body(conn) |> Jason.encode!()
 
   def wrap_response(data, code \\ 200) do
     %{

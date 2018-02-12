@@ -22,13 +22,13 @@ defmodule EHealth.API.Signature do
 
       result =
         "/digital_signatures"
-        |> post!(Poison.encode!(params), headers, config()[:hackney_options])
+        |> post!(Jason.encode!(params), headers, config()[:hackney_options])
         |> ResponseDecoder.check_response()
 
       {_, response} = result
 
       Logger.info(fn ->
-        Poison.encode!(%{
+        Jason.encode!(%{
           "log_type" => "microservice_response",
           "microservice" => "digital-signature",
           "result" => response,
@@ -45,7 +45,7 @@ defmodule EHealth.API.Signature do
           data_is_invalid_resp()
 
         {:ok, data} ->
-          case Poison.decode(data) do
+          case Jason.decode(data) do
             {:ok, data} -> data_is_valid_resp(data, headers)
             {:error, _, _} -> data_is_invalid_resp()
           end
@@ -64,7 +64,7 @@ defmodule EHealth.API.Signature do
         }
       }
       |> wrap_response(200)
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     ResponseDecoder.check_response(%HTTPoison.Response{body: data, status_code: 200})
   end
@@ -73,7 +73,7 @@ defmodule EHealth.API.Signature do
     data =
       %{"is_valid" => false}
       |> wrap_response(422)
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     ResponseDecoder.check_response(%HTTPoison.Response{body: data, status_code: 422})
   end

@@ -62,7 +62,7 @@ defmodule EHealth.DeclarationRequest.API.Sign do
         mismatches = do_compare_with_db(db_content, content)
 
         Logger.info(fn ->
-          Poison.encode!(%{
+          Jason.encode!(%{
             "log_type" => "debug",
             "process" => "declaration_request_sign",
             "details" => %{
@@ -85,7 +85,7 @@ defmodule EHealth.DeclarationRequest.API.Sign do
     tax_id = headers |> get_consumer_id() |> Parties.get_tax_id_by_user_id()
 
     Logger.info(fn ->
-      Poison.encode!(%{
+      Jason.encode!(%{
         "log_type" => "debug",
         "process" => "declaration_request_sign",
         "details" => %{
@@ -197,7 +197,7 @@ defmodule EHealth.DeclarationRequest.API.Sign do
 
   defp get_status(_) do
     Logger.error(fn ->
-      Poison.encode!(%{
+      Jason.encode!(%{
         "log_type" => "error",
         "message" => "Unknown authentication_method_current.type",
         "request_id" => Logger.metadata()[:request_id]

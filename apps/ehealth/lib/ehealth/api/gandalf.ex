@@ -28,7 +28,7 @@ defmodule EHealth.API.Gandalf do
       )
 
     request_body =
-      Poison.encode!(%{
+      Jason.encode!(%{
         phone_availability: phone_availability,
         preferable_auth_method: preferable_auth_method
       })

@@ -84,7 +84,7 @@ defmodule EHealth.Plugs.ClientContext do
 
       true ->
         Logger.error(fn ->
-          Poison.encode!(%{
+          Jason.encode!(%{
             "log_type" => "error",
             "message" => "Undefined client type name #{client_type} for context request.",
             "request_id" => Logger.metadata()[:request_id]
@@ -113,7 +113,7 @@ defmodule EHealth.Plugs.ClientContext do
 
       true ->
         Logger.error(fn ->
-          Poison.encode!(%{
+          Jason.encode!(%{
             "log_type" => "error",
             "message" => "Undefined client type name #{client_type} for context request.",
             "request_id" => Logger.metadata()[:request_id]
