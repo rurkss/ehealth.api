@@ -41,7 +41,7 @@ defmodule EHealth.Utils.Connection do
 
   defp decode_client_metadata(metadata) do
     metadata
-    |> Jaison.decode()
+    |> Jason.decode()
     |> process_decoded_data()
   end
 
