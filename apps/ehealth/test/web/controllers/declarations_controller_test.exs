@@ -185,7 +185,7 @@ defmodule EHealth.Web.DeclarationsControllerTest do
           "status" => "pending_verification"
         }
 
-        send_resp(conn, 200, Jaison.encode!(%{data: declaration}))
+        send_resp(conn, 200, Jason.encode!(%{data: declaration}))
       end
 
       Plug.Router.patch "/declarations/ce377dea-d8c4-4dd8-9328-de24b1ee3879" do
@@ -203,7 +203,7 @@ defmodule EHealth.Web.DeclarationsControllerTest do
           "status" => "approved"
         }
 
-        send_resp(conn, 200, Jaison.encode!(%{meta: %{code: 200}, data: declaration}))
+        send_resp(conn, 200, Jason.encode!(%{meta: %{code: 200}, data: declaration}))
       end
     end
 
@@ -249,7 +249,7 @@ defmodule EHealth.Web.DeclarationsControllerTest do
           "status" => "pending_verification"
         }
 
-        send_resp(conn, 200, Jaison.encode!(%{data: declaration}))
+        send_resp(conn, 200, Jason.encode!(%{data: declaration}))
       end
     end
 
@@ -291,7 +291,7 @@ defmodule EHealth.Web.DeclarationsControllerTest do
           "status" => "pending_verification"
         }
 
-        send_resp(conn, 200, Jaison.encode!(%{data: declaration}))
+        send_resp(conn, 200, Jason.encode!(%{data: declaration}))
       end
     end
 
@@ -333,7 +333,7 @@ defmodule EHealth.Web.DeclarationsControllerTest do
           "status" => "approved"
         }
 
-        send_resp(conn, 200, Jaison.encode!(%{data: declaration}))
+        send_resp(conn, 200, Jason.encode!(%{data: declaration}))
       end
 
       Plug.Router.patch "/declarations/ce377dea-d8c4-4dd8-9328-de24b1ee3879" do
@@ -353,7 +353,7 @@ defmodule EHealth.Web.DeclarationsControllerTest do
           }
         }
 
-        send_resp(conn, 422, Jaison.encode!(error_resp))
+        send_resp(conn, 422, Jason.encode!(error_resp))
       end
     end
 
@@ -397,7 +397,7 @@ defmodule EHealth.Web.DeclarationsControllerTest do
           "status" => "pending_verification"
         }
 
-        send_resp(conn, 200, Jaison.encode!(%{data: declaration}))
+        send_resp(conn, 200, Jason.encode!(%{data: declaration}))
       end
 
       Plug.Router.patch "/declarations/ce377dea-d8c4-4dd8-9328-de24b1ee3879" do
@@ -415,7 +415,7 @@ defmodule EHealth.Web.DeclarationsControllerTest do
           "status" => "rejected"
         }
 
-        send_resp(conn, 200, Jaison.encode!(%{meta: %{code: 200}, data: declaration}))
+        send_resp(conn, 200, Jason.encode!(%{meta: %{code: 200}, data: declaration}))
       end
     end
 
@@ -461,7 +461,7 @@ defmodule EHealth.Web.DeclarationsControllerTest do
           "status" => "pending_verification"
         }
 
-        send_resp(conn, 200, Jaison.encode!(%{data: declaration}))
+        send_resp(conn, 200, Jason.encode!(%{data: declaration}))
       end
     end
 
@@ -503,7 +503,7 @@ defmodule EHealth.Web.DeclarationsControllerTest do
           "status" => "pending_verification"
         }
 
-        send_resp(conn, 200, Jaison.encode!(%{data: declaration}))
+        send_resp(conn, 200, Jason.encode!(%{data: declaration}))
       end
     end
 
@@ -545,7 +545,7 @@ defmodule EHealth.Web.DeclarationsControllerTest do
           "status" => "closed"
         }
 
-        send_resp(conn, 200, Jaison.encode!(%{data: declaration}))
+        send_resp(conn, 200, Jason.encode!(%{data: declaration}))
       end
 
       Plug.Router.patch "/declarations/ce377dea-d8c4-4dd8-9328-de24b1ee3879" do
@@ -565,7 +565,7 @@ defmodule EHealth.Web.DeclarationsControllerTest do
           }
         }
 
-        send_resp(conn, 422, Jaison.encode!(error_resp))
+        send_resp(conn, 422, Jason.encode!(error_resp))
       end
     end
 
@@ -615,7 +615,7 @@ defmodule EHealth.Web.DeclarationsControllerTest do
           ]
         }
 
-        send_resp(conn, 200, Jaison.encode!(%{meta: %{code: 200}, data: data}))
+        send_resp(conn, 200, Jason.encode!(%{meta: %{code: 200}, data: data}))
       end
 
       Plug.Router.patch "/persons/9b6c7be2-278e-4be5-a297-2d009985c200/declarations/actions/terminate" do
@@ -632,15 +632,15 @@ defmodule EHealth.Web.DeclarationsControllerTest do
           ]
         }
 
-        send_resp(conn, 200, Jaison.encode!(%{meta: %{code: 200}, data: data}))
+        send_resp(conn, 200, Jason.encode!(%{meta: %{code: 200}, data: data}))
       end
 
       Plug.Router.patch "/employees/9b6c7be2-278e-4be5-a297-2d009985c404/declarations/actions/terminate" do
-        send_resp(conn, 200, Jaison.encode!(%{meta: %{code: 200}, data: %{terminated_declarations: []}}))
+        send_resp(conn, 200, Jason.encode!(%{meta: %{code: 200}, data: %{terminated_declarations: []}}))
       end
 
       Plug.Router.patch "/persons/9b6c7be2-278e-4be5-a297-2d009985c404/declarations/actions/terminate" do
-        send_resp(conn, 200, Jaison.encode!(%{meta: %{code: 200}, data: %{terminated_declarations: []}}))
+        send_resp(conn, 200, Jason.encode!(%{meta: %{code: 200}, data: %{terminated_declarations: []}}))
       end
     end
 

@@ -27,7 +27,7 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.ApproveTest do
           }
         }
 
-        Plug.Conn.send_resp(conn, 200, Jaison.encode!(resp))
+        Plug.Conn.send_resp(conn, 200, Jason.encode!(resp))
       end
 
       Plug.Router.get "/good_upload_1" do
@@ -103,7 +103,7 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.ApproveTest do
               {422, %{}}
           end
 
-        Plug.Conn.send_resp(conn, code, Jaison.encode!(%{data: status}))
+        Plug.Conn.send_resp(conn, code, Jason.encode!(%{data: status}))
       end
     end
 

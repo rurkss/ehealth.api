@@ -30,7 +30,7 @@ defmodule EHealth.Integraiton.DeclarationRequestApproveTest do
           }
         }
 
-        Plug.Conn.send_resp(conn, 200, Jaison.encode!(resp))
+        Plug.Conn.send_resp(conn, 200, Jason.encode!(resp))
       end
 
       Plug.Router.patch "/verifications/+380972805261/actions/complete" do
@@ -46,7 +46,7 @@ defmodule EHealth.Integraiton.DeclarationRequestApproveTest do
               {422, %{meta: %{code: 422}, error: %{type: "forbidden", message: "invalid verification code"}}}
           end
 
-        Plug.Conn.send_resp(conn, code, Jaison.encode!(response))
+        Plug.Conn.send_resp(conn, code, Jason.encode!(response))
       end
     end
 
@@ -82,8 +82,8 @@ defmodule EHealth.Integraiton.DeclarationRequestApproveTest do
       resp =
         conn
         |> put_req_header("x-consumer-id", "ce377dea-d8c4-4dd8-9328-de24b1ee3879")
-        |> put_req_header("x-consumer-metadata", Jaison.encode!(%{client_id: ""}))
-        |> patch("/api/declaration_requests/#{id}/actions/approve", Jaison.encode!(%{"verification_code" => "12345"}))
+        |> put_req_header("x-consumer-metadata", Jason.encode!(%{client_id: ""}))
+        |> patch("/api/declaration_requests/#{id}/actions/approve", Jason.encode!(%{"verification_code" => "12345"}))
         |> json_response(200)
 
       assert id == resp["data"]["id"]
@@ -109,7 +109,7 @@ defmodule EHealth.Integraiton.DeclarationRequestApproveTest do
       resp =
         conn
         |> put_req_header("x-consumer-id", "ce377dea-d8c4-4dd8-9328-de24b1ee3879")
-        |> put_req_header("x-consumer-metadata", Jaison.encode!(%{client_id: ""}))
+        |> put_req_header("x-consumer-metadata", Jason.encode!(%{client_id: ""}))
         |> patch("/api/declaration_requests/#{id}/actions/approve")
         |> json_response(200)
 
@@ -136,8 +136,8 @@ defmodule EHealth.Integraiton.DeclarationRequestApproveTest do
       response =
         conn
         |> put_req_header("x-consumer-id", "ce377dea-d8c4-4dd8-9328-de24b1ee3879")
-        |> put_req_header("x-consumer-metadata", Jaison.encode!(%{client_id: ""}))
-        |> patch("/api/declaration_requests/#{id}/actions/approve", Jaison.encode!(%{"verification_code" => "invalid"}))
+        |> put_req_header("x-consumer-metadata", Jason.encode!(%{client_id: ""}))
+        |> patch("/api/declaration_requests/#{id}/actions/approve", Jason.encode!(%{"verification_code" => "invalid"}))
         |> json_response(422)
 
       assert %{"error" => %{"type" => "forbidden", "message" => _}} = response
@@ -145,8 +145,8 @@ defmodule EHealth.Integraiton.DeclarationRequestApproveTest do
       response =
         conn
         |> put_req_header("x-consumer-id", "ce377dea-d8c4-4dd8-9328-de24b1ee3879")
-        |> put_req_header("x-consumer-metadata", Jaison.encode!(%{client_id: ""}))
-        |> patch("/api/declaration_requests/#{id}/actions/approve", Jaison.encode!(%{"verification_code" => "54321"}))
+        |> put_req_header("x-consumer-metadata", Jason.encode!(%{client_id: ""}))
+        |> patch("/api/declaration_requests/#{id}/actions/approve", Jason.encode!(%{"verification_code" => "54321"}))
         |> json_response(500)
 
       assert %{"error" => %{"type" => "proxied error", "message" => _}} = response
@@ -177,11 +177,11 @@ defmodule EHealth.Integraiton.DeclarationRequestApproveTest do
           }
         }
 
-        Plug.Conn.send_resp(conn, 200, Jaison.encode!(resp))
+        Plug.Conn.send_resp(conn, 200, Jason.encode!(resp))
       end
 
       Plug.Router.patch "/verifications/+380972805261/actions/complete" do
-        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{data: %{status: "verified"}}))
+        Plug.Conn.send_resp(conn, 200, Jason.encode!(%{data: %{status: "verified"}}))
       end
     end
 
@@ -217,8 +217,8 @@ defmodule EHealth.Integraiton.DeclarationRequestApproveTest do
       resp =
         conn
         |> put_req_header("x-consumer-id", "ce377dea-d8c4-4dd8-9328-de24b1ee3879")
-        |> put_req_header("x-consumer-metadata", Jaison.encode!(%{client_id: ""}))
-        |> patch("/api/declaration_requests/#{id}/actions/approve", Jaison.encode!(%{"verification_code" => "12345"}))
+        |> put_req_header("x-consumer-metadata", Jason.encode!(%{client_id: ""}))
+        |> patch("/api/declaration_requests/#{id}/actions/approve", Jason.encode!(%{"verification_code" => "12345"}))
         |> json_response(409)
 
       assert "Documents person.DECLARATION_FORM is not uploaded" == resp["error"]["message"]
@@ -262,7 +262,7 @@ defmodule EHealth.Integraiton.DeclarationRequestApproveTest do
           }
         }
 
-        Plug.Conn.send_resp(conn, 200, Jaison.encode!(resp))
+        Plug.Conn.send_resp(conn, 200, Jason.encode!(resp))
       end
     end
 
@@ -298,7 +298,7 @@ defmodule EHealth.Integraiton.DeclarationRequestApproveTest do
       resp =
         conn
         |> put_req_header("x-consumer-id", "ce377dea-d8c4-4dd8-9328-de24b1ee3879")
-        |> put_req_header("x-consumer-metadata", Jaison.encode!(%{client_id: ""}))
+        |> put_req_header("x-consumer-metadata", Jason.encode!(%{client_id: ""}))
         |> patch("/api/declaration_requests/#{id}/actions/approve")
         |> json_response(200)
 
@@ -327,7 +327,7 @@ defmodule EHealth.Integraiton.DeclarationRequestApproveTest do
       conn =
         conn
         |> put_req_header("x-consumer-id", "ce377dea-d8c4-4dd8-9328-de24b1ee3879")
-        |> put_req_header("x-consumer-metadata", Jaison.encode!(%{client_id: ""}))
+        |> put_req_header("x-consumer-metadata", Jason.encode!(%{client_id: ""}))
         |> patch("/api/declaration_requests/#{id}/actions/approve")
 
       resp = json_response(conn, 409)
@@ -351,7 +351,7 @@ defmodule EHealth.Integraiton.DeclarationRequestApproveTest do
 
       conn
       |> put_req_header("x-consumer-id", "ce377dea-d8c4-4dd8-9328-de24b1ee3879")
-      |> put_req_header("x-consumer-metadata", Jaison.encode!(%{client_id: ""}))
+      |> put_req_header("x-consumer-metadata", Jason.encode!(%{client_id: ""}))
       |> patch("/api/declaration_requests/#{id}/actions/approve")
       |> json_response(500)
     end

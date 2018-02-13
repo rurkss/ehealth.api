@@ -23,42 +23,42 @@ defmodule EHealth.Integration.DeduplicatingPersonsTest do
           %{"id" => "mc_2", "person_id" => @person2, "master_person_id" => @master_person_id}
         ]
 
-        send_resp(conn, 200, Jaison.encode!(%{data: merge_candidates}))
+        send_resp(conn, 200, Jason.encode!(%{data: merge_candidates}))
       end
 
       Plug.Router.patch "/persons/#{@master_person_id}" do
         Logger.info("Master person #{@master_person_id} was updated with #{inspect(conn.params)}.")
         %{"merged_ids" => [@person1, @person2]} = conn.params
         updated_candidate = %{}
-        send_resp(conn, 200, Jaison.encode!(%{data: updated_candidate}))
+        send_resp(conn, 200, Jason.encode!(%{data: updated_candidate}))
       end
 
       Plug.Router.patch "/persons/#{@person1}" do
         Logger.info("Person #{@person1} was deactivated.")
         %{"status" => "INACTIVE"} = conn.params
         updated_candidate = %{}
-        send_resp(conn, 200, Jaison.encode!(%{data: updated_candidate}))
+        send_resp(conn, 200, Jason.encode!(%{data: updated_candidate}))
       end
 
       Plug.Router.patch "/persons/#{@person2}" do
         Logger.info("Person #{@person2} was deactivated.")
         %{"status" => "INACTIVE"} = conn.params
         updated_candidate = %{}
-        send_resp(conn, 200, Jaison.encode!(%{data: updated_candidate}))
+        send_resp(conn, 200, Jason.encode!(%{data: updated_candidate}))
       end
 
       Plug.Router.patch "/merge_candidates/mc_1" do
         Logger.info("Candidate mc_1 was merged.")
         %{"merge_candidate" => %{"status" => "MERGED"}} = conn.params
         updated_candidate = %{}
-        send_resp(conn, 200, Jaison.encode!(%{data: updated_candidate}))
+        send_resp(conn, 200, Jason.encode!(%{data: updated_candidate}))
       end
 
       Plug.Router.patch "/merge_candidates/mc_2" do
         Logger.info("Candidate mc_2 was merged.")
         %{"merge_candidate" => %{"status" => "MERGED"}} = conn.params
         updated_candidate = %{}
-        send_resp(conn, 200, Jaison.encode!(%{data: updated_candidate}))
+        send_resp(conn, 200, Jason.encode!(%{data: updated_candidate}))
       end
 
       Plug.Router.get "/declarations" do
@@ -89,7 +89,7 @@ defmodule EHealth.Integration.DeduplicatingPersonsTest do
               ]
           end
 
-        send_resp(conn, 200, Jaison.encode!(%{data: declarations}))
+        send_resp(conn, 200, Jason.encode!(%{data: declarations}))
       end
 
       Plug.Router.patch "/persons/:id/declarations/actions/terminate" do

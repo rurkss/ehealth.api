@@ -113,7 +113,7 @@ defmodule EHealth.DeclarationRequest.API.ValidationTest do
       data =
         "test/data/declaration_request.json"
         |> File.read!()
-        |> Jaison.decode!()
+        |> Jason.decode!()
         |> Map.fetch!("declaration_request")
         |> put_in(~W(person authentication_methods), [%{"type" => "OFFLINE"}])
 

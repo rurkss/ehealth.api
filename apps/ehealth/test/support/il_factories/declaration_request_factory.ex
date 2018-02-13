@@ -9,7 +9,7 @@ defmodule EHealth.ILFactories.DeclarationRequestFactory do
         data =
           "test/data/sign_declaration_request.json"
           |> File.read!()
-          |> Jaison.decode!()
+          |> Jason.decode!()
 
         %EHealth.DeclarationRequest{
           data: data,

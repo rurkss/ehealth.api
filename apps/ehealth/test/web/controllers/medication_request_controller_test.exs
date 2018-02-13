@@ -149,7 +149,7 @@ defmodule EHealth.Web.MedicationRequestControllerTest do
       schema =
         "specs/json_schemas/medication_request/medication_request_qualify_response.json"
         |> File.read!()
-        |> Jaison.decode!()
+        |> Jason.decode!()
 
       assert :ok = NExJsonSchema.Validator.validate(schema, resp["data"])
     end
@@ -181,7 +181,7 @@ defmodule EHealth.Web.MedicationRequestControllerTest do
       schema =
         "specs/json_schemas/medication_request/medication_request_qualify_response.json"
         |> File.read!()
-        |> Jaison.decode!()
+        |> Jason.decode!()
 
       assert :ok = NExJsonSchema.Validator.validate(schema, resp["data"])
     end
@@ -205,7 +205,7 @@ defmodule EHealth.Web.MedicationRequestControllerTest do
       schema =
         "specs/json_schemas/medication_request/medication_request_qualify_response.json"
         |> File.read!()
-        |> Jaison.decode!()
+        |> Jason.decode!()
 
       assert :ok = NExJsonSchema.Validator.validate(schema, resp["data"])
     end

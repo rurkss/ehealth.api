@@ -271,6 +271,6 @@ defmodule EHealth.Web.DivisionsControllerTest do
   def get_division do
     "test/data/division.json"
     |> File.read!()
-    |> Jaison.decode!()
+    |> Jason.decode!()
   end
 end

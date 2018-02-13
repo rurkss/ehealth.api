@@ -25,11 +25,11 @@ defmodule EHealth.Registers.APITest do
               {200, []}
           end
 
-        send_resp(conn, 200, Jaison.encode!(%{meta: %{code: code}, data: data}))
+        send_resp(conn, 200, Jason.encode!(%{meta: %{code: code}, data: data}))
       end
 
       Plug.Router.patch "/persons/:id/declarations/actions/terminate" do
-        send_resp(conn, 200, Jaison.encode!(%{meta: %{code: 200}, data: %{}}))
+        send_resp(conn, 200, Jason.encode!(%{meta: %{code: 200}, data: %{}}))
       end
     end
 

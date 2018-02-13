@@ -15,7 +15,7 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.CreateTest do
         printout_form =
           conn.body_params
           |> Map.drop(["locale", "format"])
-          |> Jaison.encode!()
+          |> Jason.encode!()
 
         Plug.Conn.send_resp(conn, 200, printout_form)
       end
@@ -47,7 +47,7 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.CreateTest do
       data =
         "test/data/sign_declaration_request.json"
         |> File.read!()
-        |> Jaison.decode!()
+        |> Jason.decode!()
 
       authentication_method_current = %{
         "type" => "OTP"
@@ -184,7 +184,7 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.CreateTest do
         declaration_id: ""
       }
 
-      assert printout_content == Jaison.encode!(expected_content)
+      assert printout_content == Jason.encode!(expected_content)
     end
 
     test "updates declaration request with expected printout form when data contains more than three licenses " do
@@ -197,7 +197,7 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.CreateTest do
       data =
         "test/data/sign_declaration_request.json"
         |> File.read!()
-        |> Jaison.decode!()
+        |> Jason.decode!()
         |> put_in(["legal_entity", "licenses"], licenses)
 
       printout_content =
@@ -206,7 +206,7 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.CreateTest do
         |> put_change(:authentication_method_current, authentication_method_current)
         |> generate_printout_form()
         |> get_change(:printout_content)
-        |> Jaison.decode!()
+        |> Jason.decode!()
         |> get_in(["legal_entity", "full_license"])
 
       assert printout_content == "1a (2017-02-28), 2b (2017-02-28), 3c (2017-02-28)"
@@ -299,7 +299,7 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.CreateTest do
         declaration_id: ""
       }
 
-      assert printout_content == Jaison.encode!(expected_content)
+      assert printout_content == Jason.encode!(expected_content)
     end
 
     test "returns error on printout_content field" do
@@ -340,7 +340,7 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.CreateTest do
           %{id: "b5350f79-f2ca-408f-b15d-1ae0a8cc861c"}
         ]
 
-        send_resp(conn, 200, Jaison.encode!(%{data: search_result}))
+        send_resp(conn, 200, Jason.encode!(%{data: search_result}))
       end
 
       Plug.Router.get "/persons/b5350f79-f2ca-408f-b15d-1ae0a8cc861c" do
@@ -350,7 +350,7 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.CreateTest do
           ]
         }
 
-        send_resp(conn, 200, Jaison.encode!(%{data: person}))
+        send_resp(conn, 200, Jason.encode!(%{data: person}))
       end
     end
 
@@ -399,7 +399,7 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.CreateTest do
       use MicroservicesHelper
 
       Plug.Router.get "/persons" do
-        send_resp(conn, 200, Jaison.encode!(%{data: []}))
+        send_resp(conn, 200, Jason.encode!(%{data: []}))
       end
 
       Plug.Router.post "/api/v1/tables/some_gndf_table_id/decisions" do
@@ -407,11 +407,11 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.CreateTest do
           final_decision: "OFFLINE"
         }
 
-        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{data: decision}))
+        Plug.Conn.send_resp(conn, 200, Jason.encode!(%{data: decision}))
       end
 
       Plug.Router.post "/api/v1/tables/not_available/decisions" do
-        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{data: %{final_decision: "NA"}}))
+        Plug.Conn.send_resp(conn, 200, Jason.encode!(%{data: %{final_decision: "NA"}}))
       end
     end
 
@@ -490,7 +490,7 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.CreateTest do
       use MicroservicesHelper
 
       Plug.Router.get "/persons" do
-        send_resp(conn, 404, Jaison.encode!(%{something: "terrible"}))
+        send_resp(conn, 404, Jason.encode!(%{something: "terrible"}))
       end
     end
 
@@ -535,11 +535,11 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.CreateTest do
       use MicroservicesHelper
 
       Plug.Router.get "/persons" do
-        send_resp(conn, 200, Jaison.encode!(%{data: []}))
+        send_resp(conn, 200, Jason.encode!(%{data: []}))
       end
 
       Plug.Router.post "/api/v1/tables/some_gndf_table_id/decisions" do
-        Plug.Conn.send_resp(conn, 404, Jaison.encode!(%{something: "terrible"}))
+        Plug.Conn.send_resp(conn, 404, Jason.encode!(%{something: "terrible"}))
       end
     end
 
@@ -591,12 +591,12 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.CreateTest do
       use MicroservicesHelper
 
       Plug.Router.get "/persons/32b96821-44c4-4acb-a726-a1b5b05cb2aa" do
-        send_resp(conn, 200, Jaison.encode!(%{data: %{authentication_methods: [%{type: "NA"}]}}))
+        send_resp(conn, 200, Jason.encode!(%{data: %{authentication_methods: [%{type: "NA"}]}}))
       end
 
       Plug.Router.get "/persons" do
         person = %{id: "32b96821-44c4-4acb-a726-a1b5b05cb2aa"}
-        send_resp(conn, 200, Jaison.encode!(%{data: [person]}))
+        send_resp(conn, 200, Jason.encode!(%{data: [person]}))
       end
     end
 
@@ -652,7 +652,7 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.CreateTest do
             "+380508887700" -> 404
           end
 
-        send_resp(conn, code, Jaison.encode!(%{data: ["response_we_don't_care_about"]}))
+        send_resp(conn, code, Jason.encode!(%{data: ["response_we_don't_care_about"]}))
       end
     end
 
@@ -705,7 +705,7 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.CreateTest do
           }
         ]
 
-        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{data: party_users}))
+        Plug.Conn.send_resp(conn, 200, Jason.encode!(%{data: party_users}))
       end
 
       # Mithril API
@@ -716,11 +716,11 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.CreateTest do
           }
         ]
 
-        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{data: roles}))
+        Plug.Conn.send_resp(conn, 200, Jason.encode!(%{data: roles}))
       end
 
       Plug.Router.get "/admin/users/#{@invalid_user_id}/roles" do
-        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{data: []}))
+        Plug.Conn.send_resp(conn, 200, Jason.encode!(%{data: []}))
       end
 
       Plug.Router.get "/admin/users/#{@user_id}/roles" do
@@ -731,7 +731,7 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.CreateTest do
           }
         ]
 
-        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{data: roles}))
+        Plug.Conn.send_resp(conn, 200, Jason.encode!(%{data: roles}))
       end
 
       Plug.Router.get "/admin/users/#{@user_id}" do
@@ -739,7 +739,7 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.CreateTest do
           "email" => "user@email.com"
         }
 
-        Plug.Conn.send_resp(conn, 200, Jaison.encode!(%{data: user}))
+        Plug.Conn.send_resp(conn, 200, Jason.encode!(%{data: user}))
       end
     end
 

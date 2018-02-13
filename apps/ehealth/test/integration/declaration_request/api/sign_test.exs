@@ -146,7 +146,7 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.SignTest do
       %{id: employee_id} = insert(:prm, :employee, legal_entity_id: legal_entity_id)
 
       content = %{"employee" => %{"id" => employee_id}}
-      headers = [{"x-consumer-metadata", Jaison.encode!(%{client_id: legal_entity_id})}]
+      headers = [{"x-consumer-metadata", Jason.encode!(%{client_id: legal_entity_id})}]
       assert :ok == check_employee_id(content, headers)
     end
   end
@@ -156,7 +156,7 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.SignTest do
       use MicroservicesHelper
 
       Plug.Router.post "/persons" do
-        send_resp(conn, 200, Jaison.encode!(conn.body_params))
+        send_resp(conn, 200, Jason.encode!(conn.body_params))
       end
     end
 
@@ -187,7 +187,7 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.SignTest do
       Plug.Router.post "/declarations/with_termination" do
         %{"declaration_request_id" => _} = conn.body_params
 
-        send_resp(conn, 200, Jaison.encode!(%{data: conn.body_params}))
+        send_resp(conn, 200, Jason.encode!(%{data: conn.body_params}))
       end
     end
 
@@ -212,7 +212,7 @@ defmodule EHealth.Integraiton.DeclarationRequest.API.SignTest do
       person_id = Ecto.UUID.generate()
       person_data = %{"data" => %{"id" => person_id}}
       client_id = Ecto.UUID.generate()
-      x_consumer_metadata_header = {"x-consumer-metadata", Jaison.encode!(%{"client_id" => client_id})}
+      x_consumer_metadata_header = {"x-consumer-metadata", Jason.encode!(%{"client_id" => client_id})}
 
       {:ok, %{"data" => data}} =
         create_declaration_with_termination_logic(person_data, declaration_request, [x_consumer_metadata_header])
