@@ -5,18 +5,7 @@ defmodule EHealth.DeclarationRequest do
 
   @primary_key {:id, :binary_id, autogenerate: true}
 
-  @derive {Jason.Encoder,
-           only: [
-             :data,
-             :map,
-             :status,
-             :authentication_method_current,
-             :documents,
-             :printout_content,
-             :inserted_by,
-             :updated_by,
-             :declaration_id
-           ]}
+  @derive {Jason.Encoder, except: [:__meta__]}
 
   @status_new "NEW"
   @status_signed "SIGNED"
